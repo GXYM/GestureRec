@@ -94,7 +94,7 @@ reference_images12 = {
 
 # 初始化OneShotInference类
 num_classes12 = len(reference_images12)
-model_path = '/apdcephfs_cq10/share_1367250/somoszhang/GestureRec/demo/gesture_resnet101_010_90.pth'
+model_path = './gesture_resnet101_010_90.pth'
 one_shot_inference12 = OneShotInference(num_classes12, reference_images12, model_path)
 
 
@@ -109,7 +109,7 @@ reference_images4 = {
 
 # 初始化OneShotInference类
 num_classes4 = len(reference_images4)
-model_path = '/apdcephfs_cq10/share_1367250/somoszhang/GestureRec/demo/gesture_resnet101_0c3_4.pth'
+model_path = './gesture_resnet101_0c3_4.pth'
 one_shot_inference4 = OneShotInference(num_classes4, reference_images4, model_path)
 
 # 人手检测模型
