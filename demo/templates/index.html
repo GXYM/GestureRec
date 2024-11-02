@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Gesture Recognition</title>
+    <style>
+        video, canvas, img {
+            width: 640px;
+            height: 480px;
+            border: 1px solid black;
+        }
+        #result {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hand Gesture Recognition</h1>
+    <video id="video" autoplay></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <img id="resultImage" />
+    <p id="result">Loading...</p>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const result = document.getElementById('result');
+        const resultImage = document.getElementById('resultImage');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((err) => {
+                console.error("Error accessing the camera: ", err);
+                result.textContent = "Error accessing the camera.";
+            });
+
+        video.addEventListener('play', () => {
+            const processFrame = () => {
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = canvas.toDataURL('image/jpeg');
+
+                fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ image: imageData })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.gesture !== 'error') {
+                        result.textContent = `Gesture: ${data.gesture}`;
+                        resultImage.src = `data:image/jpeg;base64,${data.image}`;
+                    } else {
+                        result.textContent = "Error processing the image.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    result.textContent = "Error processing the image.";
+                });
+                // Add a delay to avoid overloading the server
+                setTimeout(() => {
+                    requestAnimationFrame(processFrame);
+                }, 500); // Adjust the delay as needed
+            };
+            processFrame();
+        });
+    </script>
+</body>
+</html>
