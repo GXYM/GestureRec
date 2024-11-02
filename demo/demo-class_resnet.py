@@ -16,7 +16,7 @@ app = Flask(__name__)
 model10 = models.resnet101()
 num_ftrs = model10.fc.in_features
 model10.fc = torch.nn.Linear(num_ftrs, 12)  # 假设有5个手势类别
-model10.load_state_dict(torch.load('/apdcephfs_cq10/share_1367250/somoszhang/GestureRec/demo/gesture_resnet101_010_90.pth', map_location=torch.device('cuda')))
+model10.load_state_dict(torch.load('./gesture_resnet101_010_90.pth', map_location=torch.device('cuda')))
 model10.eval()
 
 
@@ -24,7 +24,7 @@ model10.eval()
 model4 = models.resnet101()
 num_ftrs = model4.fc.in_features
 model4.fc = torch.nn.Linear(num_ftrs, 4)  # 假设有5个手势类别
-model4.load_state_dict(torch.load('/apdcephfs_cq10/share_1367250/somoszhang/GestureRec/demo/gesture_resnet101_0c3_4.pth', map_location=torch.device('cuda')))
+model4.load_state_dict(torch.load('./gesture_resnet101_0c3_4.pth', map_location=torch.device('cuda')))
 model4.eval()
 
 pose = DWposeDetector()
