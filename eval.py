@@ -14,7 +14,7 @@ data_transforms = {
     ]),
 }
 
-data_dir = '/apdcephfs_cq10/share_1367250/somoszhang/GestureRec/datas010'
+data_dir = './GestureRec/datas010'
 image_datasets = datasets.ImageFolder(os.path.join(data_dir, 'val'), data_transforms['val'])
 dataloaders = DataLoader(image_datasets, batch_size=32, shuffle=False, num_workers=4)
 class_names = image_datasets.classes
